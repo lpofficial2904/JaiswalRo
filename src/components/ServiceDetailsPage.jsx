@@ -10,6 +10,7 @@ import serviceImage from "../assets/services/ro-service.jpg";
 import repairImage from "../assets/services/ro-repair.webp";
 import installImage from "../assets/services/ro-install.png";
 import uninstallImage from "../assets/services/ro-uninstall.webp";
+import { sendWhatsAppForm } from "./whatsappForm";
 
 const serviceImages = {
   service: serviceImage,
@@ -20,11 +21,14 @@ const serviceImages = {
   "amc-plan": installImage,
 };
 
+const minVisitDate = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+
 export default function ServiceDetailsPage({ onNavigate }) {
   const { slug } = useParams();
   const service = getService(slug);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
   if (!service) return <Navigate to="/" replace />;
 
@@ -33,9 +37,14 @@ export default function ServiceDetailsPage({ onNavigate }) {
     setSubmitted(false);
   }
 
-  function submitBooking(event) {
+  async function submitBooking(event) {
     event.preventDefault();
-    setSubmitted(true);
+    setSending(true);
+    const fields = Object.fromEntries(new FormData(event.currentTarget));
+    Object.assign(fields, { service: service.title, plan: selectedPlan.name, price: `INR ${selectedPlan.price}` });
+    try { await sendWhatsAppForm("service", fields); setSubmitted(true); }
+    catch { /* Keep the completed form available for another attempt. */ }
+    finally { setSending(false); }
   }
 
   return (
@@ -177,7 +186,10 @@ export default function ServiceDetailsPage({ onNavigate }) {
                       <label>Street<input name="street" autoComplete="address-line1" required minLength="2" placeholder="Street / road name" /></label>
                       <label>Area<input name="area" autoComplete="address-line2" required minLength="2" placeholder="Area / neighbourhood" /></label>
                       <label>Pincode<input name="pincode" {...pincodeFieldProps} /></label>
-                      <button className="button button-primary service-form-full" type="submit">Confirm booking <Icon name="arrow" size={18} /></button>
+                      <label>Preferred visit date<input name="preferredDate" type="date" min={minVisitDate} required /></label>
+                      <label className="service-form-full">RO problem / notes<textarea name="problem" rows="3" required minLength="5" placeholder="RO issue, brand or any special instructions" /></label>
+                      <input className="form-honeypot" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+                      <button disabled={sending} className="button button-primary service-form-full" type="submit">{sending ? 'Sending...' : 'Confirm on WhatsApp'} {!sending && <Icon name="arrow" size={18} />}</button>
                     </form>
                   </>
                 )}

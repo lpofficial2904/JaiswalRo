@@ -11,6 +11,7 @@ import ServicesPage from './components/ServicesPage'
 import ServiceDetailsPage from './components/ServiceDetailsPage'
 import LegalPage from './components/LegalPage'
 import FloatingContactActions from './components/FloatingContactActions'
+import ScrollProgress from './components/ScrollProgress'
 import './App.css'
 
 export default function App() {
@@ -30,7 +31,7 @@ export default function App() {
     }, 0)
   }
   const showProduct = slug => routerNavigate(`/products/${slug}`)
-  return <><AnimatePresence mode="wait" initial={false}><motion.div key={location.pathname} initial={reduceMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -6 }} transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}><Routes location={location}>
+  return <><ScrollProgress/><AnimatePresence mode="wait" initial={false}><motion.div key={location.pathname} initial={reduceMotion ? false : { opacity: 0, y: 14, filter: 'blur(5px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8, filter: 'blur(3px)' }} transition={{ duration: reduceMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}><Routes location={location}>
     <Route path="/" element={<><Helmet><title>RO Service in Jaipur | Repair, Installation & AMC</title><meta name="description" content="Book doorstep RO service in Jaipur for repair, installation, uninstallation, filter replacement, maintenance and AMC plans. Call Jaiswalro today." /></Helmet><HomePage onNavigate={navigate} onProduct={showProduct} /></>} />
     <Route path="/about" element={<><Helmet><title>About Jaiswalro | RO Service Experts in Jaipur</title><meta name="description" content="Jaiswalro provides dependable RO repair, service, installation, filter replacement and AMC support across Jaipur." /></Helmet><AboutPage onNavigate={navigate} /></>} />
     <Route path="/contact" element={<><Helmet><title>Contact for RO Service in Jaipur | Jaiswalro</title><meta name="description" content="Contact Jaiswalro to book RO service, repair, installation, uninstallation, filter change or an AMC plan anywhere in Jaipur." /></Helmet><ContactPage onNavigate={navigate} /></>} />

@@ -2,9 +2,13 @@
 import Icon from "./Icon";
 import { useEffect } from "react";
 import brandLogo from "../assets/jaiswalRo_logo.png";
+import { motion, useReducedMotion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 export default function Navbar({ onOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const location = useLocation();
   useEffect(() => {
     if (!menuOpen) return undefined;
 
@@ -27,6 +31,7 @@ export default function Navbar({ onOpen }) {
     { label: "Products", target: "Products" },
     { label: "Contact", target: "Contact us" },
   ];
+  const activeTarget = location.pathname.startsWith('/products') ? 'Products' : location.pathname.startsWith('/services') ? 'Services' : location.pathname === '/about' ? 'About us' : location.pathname === '/contact' ? 'Contact us' : 'Home';
   return (
     <>
       <div className="announcement">
@@ -41,11 +46,11 @@ export default function Navbar({ onOpen }) {
           </span>
         </div>
       </div>
-      <header className="navbar">
+      <motion.header className="navbar" initial={reduceMotion ? false : { opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .55, ease: [0.22, 1, 0.36, 1] }}>
         <div className="container nav-inner">
-          <a className="brand" href="/" aria-label="Jaiswal Technologies home" onClick={event => { event.preventDefault(); onOpen('Home') }}>
+          <motion.a className="brand" href="/" aria-label="Jaiswal Technologies home" whileHover={reduceMotion ? undefined : { scale: 1.035 }} whileTap={{ scale: .98 }} onClick={event => { event.preventDefault(); onOpen('Home') }}>
             <img className="brand-logo" src={brandLogo} alt="Jaiswal Technologies" />
-          </a>
+          </motion.a>
           <nav
             className={menuOpen ? "nav-links is-open" : "nav-links"}
             aria-label="Main navigation"
@@ -64,12 +69,14 @@ export default function Navbar({ onOpen }) {
             {links.map((link) => (
               <button
                 key={link.label}
+                className={activeTarget === link.target ? 'is-active' : undefined}
+                aria-current={activeTarget === link.target ? 'page' : undefined}
                 onClick={() => {
                   onOpen(link.target);
                   setMenuOpen(false);
                 }}
               >
-                {link.label}
+                {link.label}{activeTarget === link.target && <motion.span className="nav-active-pill" layoutId="nav-active-pill" transition={{ type: 'spring', stiffness: 380, damping: 34 }} />}
               </button>
             ))}
           </nav>
@@ -93,7 +100,7 @@ export default function Navbar({ onOpen }) {
             </button>
           </div>
         </div>
-      </header>
+      </motion.header>
       <button
         className={menuOpen ? "nav-backdrop is-open" : "nav-backdrop"}
         type="button"

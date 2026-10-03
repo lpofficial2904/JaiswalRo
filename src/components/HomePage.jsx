@@ -12,6 +12,7 @@ import ServiceDialog from './ServiceDialog'
 import FAQ from './FAQ'
 import BookingBanner from './BookingBanner'
 import Footer from './Footer'
+import TrustRail from './TrustRail'
 
 export default function HomePage({ onNavigate, onProduct }) {
   const [activeDialog, setActiveDialog] = useState(null)
@@ -28,18 +29,21 @@ export default function HomePage({ onNavigate, onProduct }) {
       document.getElementById(sections[title])?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
     } else setActiveDialog(title)
   }
-  return <div className="site-shell">
+  return <div className="site-shell home-page">
     <Navbar onOpen={navigate}/>
     <Hero onOpen={navigate}/>
-    <Stats/>
-    <QuickProcess/>
-    <Services/>
-    <Coverage/>
-    <ServiceStandards/>
-    <Products onView={onProduct}/>
-    <WaterQuality onOpen={setActiveDialog}/>
-    <FAQ onOpen={setActiveDialog}/>
-    <BookingBanner onOpen={setActiveDialog}/>
+    <TrustRail/>
+    <div className="homepage-flow">
+      <Services/>
+      <QuickProcess/>
+      <Products onView={onProduct}/>
+      <Stats/>
+      <Coverage/>
+      <ServiceStandards/>
+      <WaterQuality onOpen={setActiveDialog}/>
+      <FAQ onOpen={setActiveDialog}/>
+      <BookingBanner onOpen={setActiveDialog}/>
+    </div>
     <Footer onOpen={navigate}/>
     {activeDialog && <ServiceDialog title={activeDialog} onClose={() => setActiveDialog(null)}/>}
   </div>

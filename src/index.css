@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
-:root{font-family:'Inter',Arial,sans-serif;color:#082e3b;background:#f6fafb;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400}
+:root{font-family:'Manrope',Arial,sans-serif;color:#082e3b;background:#eef6f6;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400}
 *{box-sizing:border-box}
-body{margin:0;min-width:320px}
+html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:radial-gradient(circle at 15% 0%,#dff5f3 0,transparent 28%),#eef6f6}::selection{background:#0aaeb8;color:#fff}
 button,a{-webkit-tap-highlight-color:transparent}
 button,input,select{font:inherit}
 button,a{touch-action:manipulation}

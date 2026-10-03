@@ -46,7 +46,7 @@ export default function Services() {
           </p>
         </div>
         <div className="service-grid">
-          {services.map((service) => {
+          {services.map((service, index) => {
             return (
               <MotionLink
                 to={`/services/${service.slug}`}
@@ -55,7 +55,7 @@ export default function Services() {
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: .18 }}
-                transition={{ duration: .5, delay: (services.indexOf(service) % 3) * .08, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: .5, delay: (index % 3) * .08, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ y: -8 }}
               >
                 <div className="service-image-wrap">
@@ -64,6 +64,7 @@ export default function Services() {
                   <span className="tile-icon"><Icon name={service.icon} size={20} /></span>
                 </div>
                 <div className="service-card-content">
+                  <div className="service-card-meta"><span>0{index + 1}</span><small>Doorstep care</small></div>
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
                   <p className="service-note">{service.note}</p>
@@ -76,6 +77,7 @@ export default function Services() {
             );
           })}
         </div>
+        <p className="service-swipe-hint" aria-hidden="true"><span>Swipe to explore</span><Icon name="arrow" size={16}/></p>
       </div>
     </section>
   );
