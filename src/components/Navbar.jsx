@@ -1,7 +1,7 @@
 ﻿import { useState } from "react";
 import Icon from "./Icon";
 import { useEffect } from "react";
-import brandLogo from "../assets/jaisawalRoo-logoo.png";
+import brandLogo from "../assets/jaiswalRo_logo.png";
 
 export default function Navbar({ onOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -43,7 +43,7 @@ export default function Navbar({ onOpen }) {
       </div>
       <header className="navbar">
         <div className="container nav-inner">
-          <a className="brand" href="/" aria-label="Jaiswarlo home" onClick={event => { event.preventDefault(); onOpen('Home') }}>
+          <a className="brand" href="/" aria-label="Jaiswal Technologies home" onClick={event => { event.preventDefault(); onOpen('Home') }}>
             <img className="brand-logo" src={brandLogo} alt="Jaiswal Technologies" />
           </a>
           <nav

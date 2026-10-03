@@ -1,5 +1,5 @@
 import Icon from './Icon'
-import brandLogo from '../assets/jaisawalRoo-logoo.png'
+import brandLogo from '../assets/jaiswalRo_logo.png'
 const columns = [
   { title: 'JAIPUR RO SERVICES', links: [['RO service', 'Services'], ['RO repair', 'Services'], ['RO filter replacement', 'Services'], ['RO installation', 'Services'], ['RO uninstallation', 'Services'], ['RO AMC plans', 'Services']] },
   { title: 'JAISWARLO', links: [['About us', 'About us'], ['How it works', 'Services'], ['Service pricing', 'Services'], ['Customer stories', 'Customer stories'], ['Careers', 'Careers']] },
