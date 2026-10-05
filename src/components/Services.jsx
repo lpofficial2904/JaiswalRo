@@ -32,7 +32,7 @@ export default function Services() {
               made simple.
             </h2>
             <p className="section-description">
-              From regular RO servicing and urgent repair to installation,
+              From regular RO service and urgent water purifier repair to installation,
               uninstallation, filter change and AMC—book doorstep support across Jaipur.
             </p>
           </div>

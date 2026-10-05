@@ -2,13 +2,14 @@ import novo from "../assets/products/novo-smart-ro.png";
 import aiqua from "../assets/products/aiqua-organic-series.png";
 import aquaalliteNext from "../assets/products/aquaallite-next-generation.png";
 import aquaEra from "../assets/products/aqua-era-silk-blue.png";
-import omega from "../assets/products/omega-pro-plus.png";
+import omega from "../assets/products/omega-plus-ro.png";
 import lexter from "../assets/products/lexter-ro-alkaline-uv.png";
 import nanshe from "../assets/products/nanshe-titanium.png";
 import blueshell from "../assets/products/blueshell-xtreme.png";
 import aquaalliteBlue from "../assets/products/aquaallite-blue.png";
-import aquaWavePro from "../assets/products/aqua-wave-pro.png";
+import aquaWavePro from "../assets/products/aqua-wave-pro-new.jpeg";
 import canixCopper from "../assets/products/canix-copper-ro.png";
+import lextter from "../assets/products/lexterr-ro.png";
 
 export const products = [
   {
@@ -80,7 +81,7 @@ export const products = [
     slug: "lexter-ro-alkaline-uv",
     name: "Lexter RO Alkaline UV",
     price: "8,499",
-    image: lexter,
+    image: lextter,
     description:
       "Three layers of RO, UV and alkaline protection in a compact home purifier.",
     features: [
