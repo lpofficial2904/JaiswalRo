@@ -704,3 +704,51 @@ a.contact-item:hover{padding-left:7px;color:#00899a}
   .trust-rail strong{font-size:12px}.trust-rail small{font-size:10px}
   .page-section:before{width:calc(100% - 40px)}
 }
+
+.booking-popup-backdrop{position:fixed;z-index:10000;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(3,24,30,.46);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:booking-popup-fade .22s ease-out}
+.booking-popup-card{position:relative;isolation:isolate;width:min(440px,calc(100vw - 32px));max-height:calc(100dvh - 44px);overflow:hidden;border:1px solid #b9eeeb;border-radius:26px;background:linear-gradient(145deg,#fff,#f1fbfa);box-shadow:0 34px 90px #03181e66,0 0 0 1px #ffffff80 inset;padding:34px 30px 28px;text-align:center;color:#082e3b;animation:booking-popup-rise .34s cubic-bezier(.22,1,.36,1)}
+.booking-popup-card:before{content:"";position:absolute;z-index:-1;inset:-120px -80px auto auto;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,#9df0e7 0,#dffaf7 42%,transparent 68%)}
+.booking-popup-icon{display:grid;place-items:center;width:76px;height:76px;margin:0 auto 18px;border-radius:50%;background:linear-gradient(145deg,#dffaf1,#bff3e9);color:#009873;box-shadow:0 18px 40px #00987326,inset 0 1px 0 #fff}
+.booking-popup-kicker{margin:0 0 9px;color:#07858d;font-size:10px;font-weight:800;letter-spacing:.14em}
+.booking-popup-card h2{margin:0;color:#082e3b;font-size:28px;line-height:1.1;font-weight:750;letter-spacing:-.03em}
+.booking-popup-card>p:not(.booking-popup-kicker){max-width:330px;margin:13px auto 22px;color:#5d7a83;font-size:14px;line-height:1.65}
+.booking-popup-redirect{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:8px;padding:12px 14px;border:1px solid #d3e9e8;border-radius:16px;background:#fff;color:#496d76;font-size:12px;font-weight:700}
+.booking-popup-redirect strong{display:grid;place-items:center;min-width:36px;height:30px;border-radius:999px;background:#e8f8f6;color:#04777f}
+.booking-popup-progress{position:absolute;left:0;bottom:0;height:4px;width:100%;transform-origin:left;background:linear-gradient(90deg,#16c5b7,#078e94);animation:booking-popup-progress 3s linear forwards}
+
+@keyframes booking-popup-fade{from{opacity:0}to{opacity:1}}
+@keyframes booking-popup-rise{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes booking-popup-progress{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+@media(max-width:700px){
+  .booking-popup-backdrop{align-items:center;padding:16px}
+  .booking-popup-card{width:100%;border-radius:24px;padding:30px 22px 25px}
+  .booking-popup-card h2{font-size:24px}
+  .booking-popup-icon{width:68px;height:68px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .booking-popup-backdrop,.booking-popup-card,.booking-popup-progress{animation:none}
+}
+
+/* Compact service booking plan */
+.service-plans-grid{max-width:520px}
+.service-plan-option{padding:18px 22px 16px!important;border-radius:20px}
+.service-plan-option.is-selected{padding:17px 21px 15px!important}
+.service-plan-title{font-size:20px;line-height:1.2}
+.service-plan-subtitle{display:none}
+.service-plan-price{margin-top:10px;font-size:30px}
+.service-plan-divider{margin:11px 0}
+.service-plan-features{grid-template-columns:1fr 1fr;gap:7px 12px}
+.service-plan-features>span{font-size:11px;line-height:15px}
+.service-plan-features svg{width:16px;height:16px;padding:3px}
+.service-plan-select{min-height:42px;margin-top:13px;border-radius:14px;background:linear-gradient(100deg,#08aeb8,#079d9d);color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.service-plan-option.is-selected .service-plan-select{background:linear-gradient(100deg,#08aeb8,#079d9d)}
+
+@media(max-width:700px){
+  .service-plans-grid{max-width:100%}
+  .service-plan-option{padding:17px 18px 15px!important}
+  .service-plan-option.is-selected{padding:16px 17px 14px!important}
+  .service-plan-features{grid-template-columns:1fr}
+  .service-plan-price{font-size:28px}
+}

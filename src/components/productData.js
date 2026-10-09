@@ -119,7 +119,7 @@ export const products = [
   {
     slug: "aquaallite-blue",
     name: "Aquaallite Blue",
-    price: "4,999",
+    price: "9,499",
     image: aquaalliteBlue,
     description:
       "A visible-tank purifier designed to bring advanced filtration into everyday homes.",

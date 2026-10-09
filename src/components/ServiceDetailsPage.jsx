@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Navbar from "./Navbar";
@@ -10,7 +10,8 @@ import serviceImage from "../assets/services/ro-service.jpg";
 import repairImage from "../assets/services/ro-repair.webp";
 import installImage from "../assets/services/ro-install.png";
 import uninstallImage from "../assets/services/ro-uninstall.webp";
-import { sendWhatsAppForm } from "./whatsappForm";
+import { sendEmailForm } from "./emailForm";
+import BookingSuccessPopup from "./BookingSuccessPopup";
 
 const serviceImages = {
   service: serviceImage,
@@ -29,21 +30,27 @@ export default function ServiceDetailsPage({ onNavigate }) {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const goHomeAfterSuccess = useCallback(() => {
+    onNavigate("Home");
+  }, [onNavigate]);
 
   if (!service) return <Navigate to="/" replace />;
 
   function selectPlan(plan) {
     setSelectedPlan(plan);
     setSubmitted(false);
+    setError("");
   }
 
   async function submitBooking(event) {
     event.preventDefault();
+    setError("");
     setSending(true);
     const fields = Object.fromEntries(new FormData(event.currentTarget));
     Object.assign(fields, { service: service.title, plan: selectedPlan.name, price: `INR ${selectedPlan.price}` });
-    try { await sendWhatsAppForm("service", fields); setSubmitted(true); }
-    catch { /* Keep the completed form available for another attempt. */ }
+    try { await sendEmailForm("service", fields); setSubmitted(true); }
+    catch (submitError) { setError(submitError.message || "Booking request send nahi ho saki. Please call us."); }
     finally { setSending(false); }
   }
 
@@ -157,14 +164,14 @@ export default function ServiceDetailsPage({ onNavigate }) {
                           <Icon name="check" size={15} /> Selected
                         </>
                       ) : (
-                        "Select this plan"
+                        "Book now"
                       )}
                     </span>
                   </button>
                 );
               })}
             </div>
-            {selectedPlan && (
+            {selectedPlan && !submitted && (
               <section className="service-booking-form-card" aria-live="polite">
                 {submitted ? (
                   <div className="booking-success">
@@ -181,15 +188,13 @@ export default function ServiceDetailsPage({ onNavigate }) {
                     <form className="service-booking-form" onSubmit={submitBooking}>
                       <label>Name<input name="name" autoComplete="name" required minLength="2" placeholder="Your full name" /></label>
                       <label>Mobile number<input name="mobile" {...mobileFieldProps} /></label>
-                      <label className="service-form-full">Proper location<input name="location" autoComplete="address-level2" required minLength="2" placeholder="City / locality" /></label>
-                      <label>Flat number<input name="flatNumber" autoComplete="address-line1" required minLength="1" placeholder="Flat / house number" /></label>
-                      <label>Street<input name="street" autoComplete="address-line1" required minLength="2" placeholder="Street / road name" /></label>
-                      <label>Area<input name="area" autoComplete="address-line2" required minLength="2" placeholder="Area / neighbourhood" /></label>
+                      <label className="service-form-full">Full address<textarea name="fullAddress" autoComplete="street-address" required minLength="8" rows="3" placeholder="House / flat, street, area, landmark" /></label>
                       <label>Pincode<input name="pincode" {...pincodeFieldProps} /></label>
                       <label>Preferred visit date<input name="preferredDate" type="date" min={minVisitDate} required /></label>
                       <label className="service-form-full">RO problem / notes<textarea name="problem" rows="3" required minLength="5" placeholder="RO issue, brand or any special instructions" /></label>
                       <input className="form-honeypot" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
-                      <button disabled={sending} className="button button-primary service-form-full" type="submit">{sending ? 'Sending...' : 'Confirm on WhatsApp'} {!sending && <Icon name="arrow" size={18} />}</button>
+                      {error && <p className="form-error">{error}</p>}
+                      <button disabled={sending} className="button button-primary service-form-full" type="submit">{sending ? 'Sending...' : 'Confirm booking'} {!sending && <Icon name="arrow" size={18} />}</button>
                     </form>
                   </>
                 )}
@@ -199,6 +204,12 @@ export default function ServiceDetailsPage({ onNavigate }) {
         </section>
       </main>
       <Footer onOpen={onNavigate} />
+      <BookingSuccessPopup
+        open={submitted}
+        title="Booking request confirmed"
+        message={`Thanks for choosing ${selectedPlan?.name ?? "Jaiswalro"}. Our team will contact you shortly.`}
+        onDone={goHomeAfterSuccess}
+      />
     </div>
   );
 }

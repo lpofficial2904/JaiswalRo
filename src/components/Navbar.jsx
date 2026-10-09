@@ -42,7 +42,8 @@ export default function Navbar({ onOpen }) {
           </span>
           <span>
             8Am -8Pm daily <span className="separator">·</span>{" "}
-            <a href="tel:+919694727871" aria-label="Call support at +91 9694727871">Support: +91 9694727871</a>
+            <a href="tel:+919694727871" aria-label="Call support at +91 9694727871">Support: +91 9694727871 </a>
+            <a href="tel:+919694721254" aria-label="Call support at +91 9694721254">Support: +91 9694721254 </a>
           </span>
         </div>
       </div>

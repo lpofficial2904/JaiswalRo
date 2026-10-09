@@ -5,12 +5,14 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import Icon from './Icon'
 import ProductBookingDialog from './ProductBookingDialog'
+import BookingSuccessPopup from './BookingSuccessPopup'
 import { getProduct, products } from './productData'
 
 export default function ProductDetailsPage({ onNavigate, onProduct }) {
   const { slug } = useParams()
   const product = getProduct(slug)
   const [bookingProduct, setBookingProduct] = useState(null)
+  const [successProduct, setSuccessProduct] = useState('')
   if (!product) return null
   const related = products.filter(item => item.slug !== product.slug).slice(0, 3)
   return <div className="site-shell product-details-page">
@@ -22,6 +24,7 @@ export default function ProductDetailsPage({ onNavigate, onProduct }) {
       <section className="related-products page-section"><div className="container"><div className="related-heading"><div><span className="eyebrow"><span />EXPLORE MORE</span><h2>Related purifiers you may like.</h2></div><button className="button button-outline" onClick={() => onNavigate('Products')}>View all products <Icon name="arrow" size={17} /></button></div><div className="related-grid">{related.map(item => <article className="related-card" key={item.slug} onClick={() => onProduct(item.slug)}><div><img src={item.image} alt={item.name} loading="lazy" /></div><h3>{item.name}</h3><p>₹{item.price}</p><button onClick={event => { event.stopPropagation(); onProduct(item.slug) }}>View details <Icon name="arrow" size={16} /></button></article>)}</div></div></section>
     </main>
     <Footer onOpen={onNavigate} />
-    {bookingProduct && <ProductBookingDialog product={bookingProduct} onClose={() => setBookingProduct(null)} />}
+    {bookingProduct && <ProductBookingDialog product={bookingProduct} onClose={() => setBookingProduct(null)} onSuccess={() => { setSuccessProduct(bookingProduct); setBookingProduct(null) }} />}
+    <BookingSuccessPopup open={Boolean(successProduct)} title="Booking request confirmed" message={`Thanks for choosing ${successProduct || 'Jaiswalro'}. Our team will contact you shortly.`} onDone={() => { setSuccessProduct(''); onNavigate('Home') }} />
   </div>
 }
