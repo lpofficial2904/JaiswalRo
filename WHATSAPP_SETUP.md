@@ -41,7 +41,7 @@ the Resend API key in the frontend or in a committed `.env` file.
 
 Deploy `Frontend` as the Netlify static site and `backend` as a Node.js service
 (Node.js 20.6 or newer). The frontend calls
-`https://jaiswalro-backend2.onrender.com` directly. Configure the backend
+`https://api.jaiswalro.services` directly. Configure the backend
 variables from `backend/.env.example` in the backend host, including
 `CORS_ORIGINS` for every frontend origin. The server also allows localhost and
 the Jaiswalro production domains by default. Use `VITE_API_BASE_URL` only to
