@@ -23,7 +23,7 @@ export async function submitForm(path, formType, fields) {
 
     if (!response.ok) {
       if (response.status >= 500) {
-        throw new Error(serviceUnavailableError)
+        throw new Error(result.error || serviceUnavailableError)
       }
       throw new Error(result.error || defaultRequestError)
     }
