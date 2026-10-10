@@ -1,42 +1,51 @@
-# WhatsApp form setup
+# Backend setup
 
-The Contact, Product and Service forms submit to the Netlify function at
-`/.netlify/functions/send-whatsapp`. The function sends a separately labelled,
-complete message through Meta's WhatsApp Cloud API. API credentials remain on
-the server and are never included in the browser bundle.
+Contact, product, and service forms call the standalone API in the repository's
+`backend` folder. The backend sends booking emails through SMTP and WhatsApp
+messages through Meta's WhatsApp Cloud API. Credentials stay in the backend
+environment and must never be placed in frontend variables or committed.
 
-## Meta configuration
+## Local development
+
+1. In `Frontend`, run `npm install` once, then `npm run dev`.
+2. Open the Vite URL (default `http://localhost:5173`). Website forms and the
+   API warm-up request use the live Render backend by default.
+3. To develop the API locally, run `npm install` in `backend`, copy
+   `.env.example` to `.env`, configure credentials, and run `npm run dev`.
+   Then set `VITE_API_BASE_URL=http://localhost:3001` in `Frontend/.env`.
+
+The backend exposes `GET /health` and `/api/health`, `POST /api/forms/email`,
+and `POST /api/forms/whatsapp`.
+
+## Email on Render
+
+Render Free blocks outbound SMTP ports. Use Resend's HTTPS API instead: verify
+your sending domain with Resend, then set `RESEND_API_KEY`, `MAIL_FROM` (an
+address on that verified domain), and `MAIL_TO` in the Render backend
+environment settings. Redeploy the backend after adding the values. Never put
+the Resend API key in the frontend or in a committed `.env` file.
+
+## Meta WhatsApp configuration
 
 1. Create/select a Meta Developer app and add the **WhatsApp** product.
 2. In WhatsApp API Setup, copy the **Phone number ID** (not the visible phone
-   number). Add the WhatsApp number that should receive enquiries as a permitted
-   recipient while the app is in development mode.
+   number). In development mode, add the receiving number as a permitted
+   recipient.
 3. For production, create a permanent System User access token with
    `whatsapp_business_messaging` permission. Temporary tokens expire.
-4. Ensure the receiving number has opted in. A free-form text message is only
-   accepted by WhatsApp inside an open 24-hour customer-service conversation;
-   outside that window Meta requires an approved message template.
+4. Ensure the receiving number has opted in. Free-form text messages are only
+   accepted within an open 24-hour customer-service conversation; outside that
+   window Meta requires an approved message template.
 
-## Netlify environment variables
+## Deployment
 
-In **Site configuration > Environment variables**, add:
+Deploy `Frontend` as the Netlify static site and `backend` as a Node.js service
+(Node.js 20.6 or newer). The frontend calls
+`https://jaiswalro-backend2.onrender.com` directly. Configure the backend
+variables from `backend/.env.example` in the backend host, including
+`CORS_ORIGINS` for every frontend origin. The server also allows localhost and
+the Jaiswalro production domains by default. Use `VITE_API_BASE_URL` only to
+override the public backend URL; it must not contain secrets.
 
-| Variable | Value |
-| --- | --- |
-| `WHATSAPP_ACCESS_TOKEN` | Permanent Meta access token |
-| `WHATSAPP_PHONE_NUMBER_ID` | Sender phone-number ID from Meta |
-| `WHATSAPP_TO_NUMBER` | Receiving number with country code, digits only, for example `919694727871` |
-| `WHATSAPP_API_VERSION` | Optional Graph version; defaults to `v23.0` |
-
-Redeploy the site after saving variables. Never add real tokens to `.env`,
-`.env.example`, Git, or frontend variables prefixed with `VITE_`.
-
-## Local test
-
-Install Netlify CLI, copy `.env.example` to an ignored local `.env`, insert test
-credentials, then run `netlify dev`. Plain `npm run dev` does not emulate the
-serverless endpoint.
-
-Submit one Contact, one Product, and one Service form. Confirm WhatsApp shows
-the three headings `NEW CONTACT FORM`, `NEW PRODUCT BOOKING`, and
-`NEW SERVICE BOOKING`, and verify every submitted field is present.
+Never commit a real `.env` file or put SMTP/Meta secrets in variables prefixed
+with `VITE_`.

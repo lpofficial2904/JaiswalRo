@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import HomePage from './components/HomePage'
@@ -13,6 +13,7 @@ import LegalPage from './components/LegalPage'
 import FloatingContactActions from './components/FloatingContactActions'
 import ScrollProgress from './components/ScrollProgress'
 import { faqItems } from './components/FAQ'
+import { apiBaseUrl } from './apiBaseUrl'
 import './App.css'
 
 const siteUrl = 'https://jaiswalro.services/'
@@ -105,6 +106,12 @@ export default function App() {
   const routerNavigate = useNavigate()
   const location = useLocation()
   const reduceMotion = useReducedMotion()
+  useEffect(() => {
+    fetch(`${apiBaseUrl}/health`, { cache: 'no-store' }).catch(error => {
+      console.warn('Booking API warm-up failed', error)
+    })
+  }, [])
+
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [location.key])

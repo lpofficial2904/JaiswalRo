@@ -8,8 +8,10 @@ import { sendEmailForm } from "./emailForm";
 export default function ContactPage({ onNavigate }) {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   async function submit(event) {
     event.preventDefault();
+    setError("");
     setSending(true);
     try {
       await sendEmailForm(
@@ -17,8 +19,8 @@ export default function ContactPage({ onNavigate }) {
         Object.fromEntries(new FormData(event.currentTarget)),
       );
       setSent(true);
-    } catch {
-      /* Keep the completed form available for another attempt. */
+    } catch (submitError) {
+      setError(submitError.message || "We could not send your request. Please try again.");
     } finally {
       setSending(false);
     }
@@ -154,6 +156,7 @@ export default function ContactPage({ onNavigate }) {
                       autoComplete="off"
                       aria-hidden="true"
                     />
+                    {error && <p className="form-error" role="alert">{error}</p>}
                     <button
                       disabled={sending}
                       className="button button-primary"

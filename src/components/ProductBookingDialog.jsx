@@ -28,7 +28,7 @@ export default function ProductBookingDialog({ product, onClose, onSuccess }) {
       await sendEmailForm('product', fields)
       onSuccess?.()
     } catch (submitError) {
-      setError(submitError.message || 'Booking request send nahi ho saki. Please call us.')
+      setError(submitError.message || 'We could not send your booking request. Please call us.')
     } finally {
       setSending(false)
     }
@@ -58,7 +58,7 @@ export default function ProductBookingDialog({ product, onClose, onSuccess }) {
         <label>Pincode<input name="pincode" {...pincodeFieldProps} /></label>
         <label>Message<textarea name="message" rows="3" required minLength="10" placeholder="Any question or preferred installation time?" /></label>
         <input className="form-honeypot" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
-        {error && <p className="form-error">{error}</p>}
+        {error && <p className="form-error" role="alert">{error}</p>}
         <button disabled={sending} className="button button-primary" type="submit">
           {sending ? 'Sending...' : 'Send booking request'} {!sending && <Icon name="arrow" size={18} />}
         </button>

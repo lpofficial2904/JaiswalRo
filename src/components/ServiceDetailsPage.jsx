@@ -50,7 +50,7 @@ export default function ServiceDetailsPage({ onNavigate }) {
     const fields = Object.fromEntries(new FormData(event.currentTarget));
     Object.assign(fields, { service: service.title, plan: selectedPlan.name, price: `INR ${selectedPlan.price}` });
     try { await sendEmailForm("service", fields); setSubmitted(true); }
-    catch (submitError) { setError(submitError.message || "Booking request send nahi ho saki. Please call us."); }
+    catch (submitError) { setError(submitError.message || "We could not send your booking request. Please call us."); }
     finally { setSending(false); }
   }
 
@@ -193,7 +193,7 @@ export default function ServiceDetailsPage({ onNavigate }) {
                       <label>Preferred visit date<input name="preferredDate" type="date" min={minVisitDate} required /></label>
                       <label className="service-form-full">RO problem / notes<textarea name="problem" rows="3" required minLength="5" placeholder="RO issue, brand or any special instructions" /></label>
                       <input className="form-honeypot" name="website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
-                      {error && <p className="form-error">{error}</p>}
+                      {error && <p className="form-error" role="alert">{error}</p>}
                       <button disabled={sending} className="button button-primary service-form-full" type="submit">{sending ? 'Sending...' : 'Confirm booking'} {!sending && <Icon name="arrow" size={18} />}</button>
                     </form>
                   </>
